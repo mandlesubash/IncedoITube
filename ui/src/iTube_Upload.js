@@ -15,7 +15,7 @@ class Upload extends Component {
       description: "",
       tags: "",
       video: null,
-      isOpen:false
+      showModal:false
     };
 
     // this.handleSubmit = this.handleSubmit.bind(this);
@@ -55,10 +55,10 @@ class Upload extends Component {
       });
       this.fileInput.current.value = null;
     } catch (err) {}
-    this.setState({isOpen:true})
+    this.setState({showModal:true})
   }
-  openModal = () => this.setState({ isOpen: true });
-  closeModal = () => this.setState({ isOpen: false });
+  openModal = () => this.setState({ showModal: true });
+  CloseModal = () => this.setState({ showModal: false });
 
   handleVid=(event)=>{
     event.preventDefault();
@@ -179,7 +179,7 @@ class Upload extends Component {
         <br />
         <br />
         <div class="container">
-          <form class="row gy-2 gx-3 align-items-center">
+          <form class="row gy-2 gx-3 align-items-center"   onSubmit={this.handleSubmit}   >
             <div class="col-auto">
               <label>Title</label>
               <input
@@ -187,7 +187,7 @@ class Upload extends Component {
                 type="text"
                 name="title"
                 value={this.state.title}
-                onChange={this.handleInputChange}
+                onChange={this.handleInputChange} required
               />
             </div>
             <div class="col-auto">
@@ -197,7 +197,7 @@ class Upload extends Component {
                 type="text"
                 name="description"
                 value={this.state.description}
-                onChange={this.handleInputChange}
+                onChange={this.handleInputChange} required
               />
             </div>
             <div class="col-auto">
@@ -207,7 +207,7 @@ class Upload extends Component {
                 type="text"
                 name="tags"
                 value={this.state.tags}
-                onChange={this.handleInputChange}
+                onChange={this.handleInputChange} required
               />
             </div>
             <div class="">
@@ -217,33 +217,35 @@ class Upload extends Component {
                 type="file"
                 name="video"
                 ref={this.fileInput}
-                onChange={this.handleFileChange}
+                onChange={this.handleFileChange} required
               />
             </div>
             <div class="col-auto">
               <button
-                type="button"
+                type="submit"
                 class="btn btn-primary"
               
-                onClick={this.handleSubmit}   
+              
               >
                 Submit
               </button>
-              <Modal show={this.state.isOpen && this.state.video} onHide={this.closeModal}>
-  <Modal.Header closeButton>
-  </Modal.Header>
-  <Modal.Body>Video Submitted Successfully</Modal.Body>
-  <Modal.Footer>
-    <Button variant="secondary" onClick={this.closeModal} style={{backgroundColor:"blue"}}>
-      Close
-    </Button>
-  </Modal.Footer>
-</Modal>
+              
               
             </div>
           </form>
         </div>
         <br />
+        <Modal show={this.state.showModal} onHide={this.CloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Submission Successful</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Video uploaded successfully.</Modal.Body>
+          <Modal.Footer>
+            <button className="btn btn-primary" onClick={this.CloseModal}>
+              Close
+            </button>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }
